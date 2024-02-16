@@ -6,18 +6,20 @@ def goappend():
     backend.appending(newitem)
     st.session_state['add']=""
 
-# def godelete():
-#     pass
-
 st.title("Todo App")
 st.subheader("The list of tasks:")
 
 
 tasks = backend.reading()
-for item in tasks:
-    st.checkbox(item)
+for index, item in enumerate(tasks):
+     checkbox = st.checkbox(item, key=item)
+     if checkbox:
+          tasks.pop(index)
+          backend.writing(tasks)
+          del st.session_state[item]
+          st.rerun()
+
 
 st.text_input(label="", placeholder="Add a new Todo...",
               on_change=goappend,key="add")
-#st.session_state
-print("The end")
+
